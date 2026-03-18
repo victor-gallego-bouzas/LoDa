@@ -1,5 +1,5 @@
 import mysql.connector
-
+#Conexión con base de datos
 def conectar():
            conexion = mysql.connector.connect(
             host='localhost',
@@ -9,10 +9,13 @@ def conectar():
         )
            return conexion
 
-if __name__ == "__main__":
-    try:
-        conexion = conectar()
-        print("Conexión exitosa a la base de datos.")
-        conexion.close()
-    except mysql.connector.Error as err:
-        print(f"Error al conectar a la base de datos: {err}")
+
+
+#PRUEBA DE CONEXIÓN
+#if __name__ == "__main__":
+#    try:
+#        conexion = conectar()
+#        print("Conexión exitosa a la base de datos.")
+#        conexion.close()
+#    except mysql.connector.Error as err:
+#        print(f"Error al conectar a la base de datos: {err}")
