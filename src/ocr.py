@@ -8,38 +8,33 @@ import json
 
 
 load_dotenv()
-# --- 1. CONFIGURACIÓN ---
-# He puesto la clave que venía en tu curl, asegúrate de que es la tuya
+#Aquí conectamos con la API de gemini para extraer datos del albaran 
 API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=API_KEY)
 
-if not API_KEY:
-    print("❌ ERROR: No se encontró la API_KEY en el archivo .env")
-else:
-    genai.configure(api_key=API_KEY)
-
-def procesar_albaran_con_ia(ruta_pdf):
-    # Abrimos el PDF y lo pasamos a imagen
+#Creamos función para la extracción de datos
+def extraer_datos(ruta_pdf):
+#En esta parte creamos una imagen del PDF
     doc = fitz.open(ruta_pdf)
     pagina = doc.load_page(0)
     pix = pagina.get_pixmap(matrix=fitz.Matrix(2, 2))
     img_data = pix.tobytes("png")
     imagen_pil = PIL.Image.open(io.BytesIO(img_data))
-
-    # --- CAMBIO CLAVE AQUÍ ---
-    # Usamos el nombre exacto del inicio rápido que pasaste
     model = genai.GenerativeModel('gemini-flash-latest')
-
+#Creamos el prompt para la extraccion correcta de datos
     prompt = """
     Analiza este albarán y extrae estos datos en JSON puro:
-    - n_albaran (8 dígitos)
-    - bultos (número)
-    - matriculas (lista de matrículas)
-    - referencias (lista con 'ref' y 'cant')
-    - soria (true/false si aparece la palabra)
+    {
+      "n_albaran": "8 dígitos",
+      "bultos": "número",
+      "transportista": "SORIA o SESE o TR-PROPIO",
+      "matricula": "texto",
+      "remolque": "texto",
+      "referencias": [ {"ref": "codigo", "cant": numero} ]
+    }
+    IMPORTANTE: Responde solo el JSON.
     """
-
-    # Llamada a la IA
+#Llamamos a Gemini
     response = model.generate_content([prompt, imagen_pil])
     
     try:
@@ -53,8 +48,8 @@ if __name__ == "__main__":
     archivo = "database/albaran_prueba.pdf"
     print("🚀 Probando con 'gemini-flash-latest'...")
     try:
-        resultado = procesar_albaran_con_ia(archivo)
-        print("\n✅ ¡POR FIN! RESULTADOS:")
+        resultado = extraer_datos(archivo)
+        print("\nRESULTADOS:")
         print(json.dumps(resultado, indent=4, ensure_ascii=False))
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\nError: {e}")
