@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
-import fitz  # PyMuPDF
+import fitz 
 import PIL.Image
 import io
 import json
@@ -38,18 +38,8 @@ def extraer_datos(ruta_pdf):
     response = model.generate_content([prompt, imagen_pil])
     
     try:
-        # Limpiamos la respuesta
+# Limpiamos la respuesta ya que solo necesitamos los datos concretos
         texto = response.text.replace("```json", "").replace("```", "").strip()
         return json.loads(texto)
     except Exception as e:
         return {"error": "Error al procesar", "detalle": str(e), "raw": response.text}
-
-if __name__ == "__main__":
-    archivo = "database/albaran_prueba.pdf"
-    print("🚀 Probando con 'gemini-flash-latest'...")
-    try:
-        resultado = extraer_datos(archivo)
-        print("\nRESULTADOS:")
-        print(json.dumps(resultado, indent=4, ensure_ascii=False))
-    except Exception as e:
-        print(f"\nError: {e}")
