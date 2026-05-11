@@ -28,7 +28,7 @@ def registrar_entrada_excel(matricula, remolque=""):
                 fila_encontrada += 2
             sheet.cell(row=fila_encontrada, column=3).value = matricula.upper()
             sheet.cell(row=fila_encontrada + 1, column=3).value = remolque.upper() 
-            print(f"🚛 Nueva matrícula registrada en fila {fila_encontrada}")
+            print(f"🚛 Nueva matrícula registrada.")
 
         columnas_entrada = [6, 10, 14, 18, 22] 
         registrado = False
@@ -86,7 +86,7 @@ def registrar_horario_diario(datos):
         sheet.cell(row=fila_libre, column=7).value = datos.get("bultos", "")
 
         wb.save(ruta_excel)
-        print(f"📊 Horario Diario: Datos guardados en la fila {fila_libre}")
+        print(f"📊 Horario Diario: Datos guardados.")
 
     except PermissionError:
         print("❌ ERROR: El archivo está abierto. Ciérralo.")
@@ -144,7 +144,7 @@ def registrar_salida_diaria(remolque_o_matricula):
                     
                     try:
                         wb.save(ruta_excel)
-                        print(f"✅ Salida diaria anotada: {hora_actual} en fila {fila}")
+                        print(f"✅ Salida diaria anotada: {hora_actual}")
                         return True
                     except PermissionError:
                         print("❌ ERROR: El archivo está abierto. Ciérralo")

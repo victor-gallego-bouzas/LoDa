@@ -62,7 +62,7 @@ def generar_documentos_especificos(datos):
             try:
                 # os.startfile(doc, "print") 
                 
-                print(f"  [SISTEMA] Orden enviada: {doc} -> Impresora predeterminada")
+                print(f"  Orden enviada: {doc} -> Impresora predeterminada")
                 
             except Exception as e:
                 print(f"  ❌ Error al enviar {doc} a la impresora: {e}")
